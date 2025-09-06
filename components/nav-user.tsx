@@ -78,10 +78,12 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="hover:!bg-primary/10">
-                <IconUserCircle />
-                Account
-              </DropdownMenuItem>
+              <a href='/account'>
+                <DropdownMenuItem className="hover:!bg-primary/10">
+                  <IconUserCircle />
+                  Account
+                </DropdownMenuItem>
+              </a>
               {/* <DropdownMenuItem>
                 <IconCreditCard />
                 Billing
@@ -92,10 +94,13 @@ export function NavUser({
               </DropdownMenuItem> */}
             </DropdownMenuGroup>
             {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem className="hover:!bg-primary/10">
-              <IconLogout />
-              Log out
-            </DropdownMenuItem>
+
+            <a href='/logout'>
+              <DropdownMenuItem className="hover:!bg-primary/10">
+                <IconLogout />
+                Log out
+              </DropdownMenuItem>
+            </a>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

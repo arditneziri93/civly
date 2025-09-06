@@ -19,15 +19,11 @@ export function LoginForm({
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome to Civly</CardTitle>
           <CardDescription>
-            Login with your Apple or Google account
+            Login with your Civly account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="grid gap-6">
-              {children}
-            </div>
-          </form>
+          {children}
         </CardContent>
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
