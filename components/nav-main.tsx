@@ -23,6 +23,7 @@ import {
 export function NavMain({
   items,
   resumes,
+  cvs
 }: {
   items: {
     title: string
@@ -35,13 +36,22 @@ export function NavMain({
     url: string
     icon?: Icon
     items: {
-      title: string
-      url: string
+      id: string;
+      visibility: string;
     }[]
-  }
+  },
+  cvs: [{
+    id: string;
+    visibility: string;
+    //name: string;
+  }]
 }) {
   const [isResumesOpen, setIsResumesOpen] = useState(true)
   const pathname = usePathname()
+  if(resumes) {
+  let resumesNew = resumes;
+  resumesNew.items = cvs;
+  }
 
   return (
     <SidebarGroup>
@@ -97,14 +107,14 @@ export function NavMain({
               </SidebarMenuButton>
               {isResumesOpen && (
                 <SidebarMenuSub>
-                  {resumes.items.map((item) => (
-                    <SidebarMenuSubItem key={item.title}>
+                  {resumes && resumes.items && resumes.items.map((item) => (
+                    <SidebarMenuSubItem key={item.id}>
                       <SidebarMenuSubButton
                         asChild
                         className="hover:!bg-primary/10"
                       >
-                        <a href={item.url}>
-                          <span>{item.title}</span>
+                        <a href={'/cv/'+item.id}>
+                          <span>{item.id}</span>
                         </a>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

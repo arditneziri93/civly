@@ -22,6 +22,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { CivlyLogo } from '@/components/custom/civly-logo'
+import { CVData } from '@/types/cv-data'
 
 const data = {
   navMain: [
@@ -65,7 +66,9 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({cvs, ...props }: React.ComponentProps<typeof Sidebar>) {
+  console.log(cvs);
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -84,7 +87,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={data.navMain} resumes={data.resumes} />
+        <NavMain items={data.navMain} resumes={data.resumes} cvs={cvs}/>
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
 
