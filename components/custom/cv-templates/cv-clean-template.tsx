@@ -126,7 +126,9 @@ export function CVCleanTemplate({
                   className="flex items-center gap-1.5 text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   <IconBrandLinkedin className="w-3 h-3" />
-                  <span>{getLinkedInUsername(cvData.personalInformation.linkedin)}</span>
+                  <span>
+                    {getLinkedInUsername(cvData.personalInformation.linkedin)}
+                  </span>
                 </a>
               )}
               {cvData.personalInformation.xing && (
@@ -137,7 +139,9 @@ export function CVCleanTemplate({
                   className="flex items-center gap-1.5 text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   <IconBrandXing className="w-3 h-3" />
-                  <span>{getXingUsername(cvData.personalInformation.xing)}</span>
+                  <span>
+                    {getXingUsername(cvData.personalInformation.xing)}
+                  </span>
                 </a>
               )}
             </div>

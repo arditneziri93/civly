@@ -1,5 +1,6 @@
 export interface CVData {
   id: string
+  name?: string | null
   last_modified?: Date | null
   created_at?: Date | null
   user_id?: string | null

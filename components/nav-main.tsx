@@ -8,6 +8,7 @@ import {
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { CVData } from '@/types/cv-data'
 
 import {
   SidebarGroup,
@@ -23,7 +24,7 @@ import {
 export function NavMain({
   items,
   resumes,
-  cvs
+  cvs,
 }: {
   items: {
     title: string
@@ -35,22 +36,45 @@ export function NavMain({
     title: string
     url: string
     icon?: Icon
-    items: {
-      id: string;
-      visibility: string;
-    }[]
-  },
-  cvs: [{
-    id: string;
-    visibility: string;
-    //name: string;
-  }]
+    items: CVData[]
+  }
+  cvs: CVData[]
 }) {
   const [isResumesOpen, setIsResumesOpen] = useState(true)
   const pathname = usePathname()
-  if(resumes) {
-  let resumesNew = resumes;
-  resumesNew.items = cvs;
+
+  // Function to get CV display name
+  const getCvDisplayName = (cv: CVData) => {
+    // First priority: use the CV name field if it exists
+    if (cv.name && cv.name.trim()) {
+      return cv.name.trim()
+    }
+
+    // Second priority: use personal information
+    const personalInfo = cv.personalInformation || {}
+    const name = personalInfo.name || ''
+    const surname = personalInfo.surname || ''
+
+    if (name || surname) {
+      return `CV - ${name} ${surname}`.trim()
+    }
+
+    // Third priority: use email
+    const email = personalInfo.email || ''
+    if (email) {
+      return `CV - ${email.split('@')[0]}`
+    }
+
+    // Fallback to ID or date
+    const dateStr = cv.created_at
+      ? new Date(cv.created_at).toLocaleDateString()
+      : ''
+    return `CV - ${dateStr || cv.id.toString().slice(0, 8)}`
+  }
+
+  if (resumes) {
+    const resumesNew = resumes
+    resumesNew.items = cvs
   }
 
   return (
@@ -59,11 +83,14 @@ export function NavMain({
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
-              tooltip="Quick Create"
+              tooltip="Create new CV"
+              asChild
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
             >
-              <IconCirclePlusFilled />
-              <span>New Resume</span>
+              <Link href="/cv/new">
+                <IconCirclePlusFilled />
+                <span>New Resume</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -107,18 +134,28 @@ export function NavMain({
               </SidebarMenuButton>
               {isResumesOpen && (
                 <SidebarMenuSub>
-                  {resumes && resumes.items && resumes.items.map((item) => (
-                    <SidebarMenuSubItem key={item.id}>
-                      <SidebarMenuSubButton
-                        asChild
-                        className="hover:!bg-primary/10"
-                      >
-                        <a href={'/cv/'+item.id}>
-                          <span>{item.id}</span>
-                        </a>
-                      </SidebarMenuSubButton>
+                  {resumes && resumes.items && resumes.items.length > 0 ? (
+                    resumes.items.map((cv) => (
+                      <SidebarMenuSubItem key={cv.id}>
+                        <SidebarMenuSubButton
+                          asChild
+                          className="hover:!bg-primary/10"
+                        >
+                          <Link href={'/cv/' + cv.id}>
+                            <span className="text-sm ">
+                              {getCvDisplayName(cv)}
+                            </span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))
+                  ) : (
+                    <SidebarMenuSubItem>
+                      <div className="px-2 py-1 text-sm text-muted-foreground">
+                        No Resumes Found
+                      </div>
                     </SidebarMenuSubItem>
-                  ))}
+                  )}
                 </SidebarMenuSub>
               )}
             </SidebarMenuItem>

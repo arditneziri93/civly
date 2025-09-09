@@ -24,50 +24,38 @@ import {
 import { CivlyLogo } from '@/components/custom/civly-logo'
 import { CVData } from '@/types/cv-data'
 
-const data = {
-  navMain: [
-    {
-      title: 'Dashboard',
-      url: '/',
-      icon: IconDashboard,
-      isActive: true,
-    },
-  ],
-  resumes: {
-    title: 'My Resumes',
-    url: '/resumes',
-    icon: IconFileDescription,
-    items: [
+export function AppSidebar({
+  cvs = [],
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { cvs?: CVData[] }) {
+  const data = {
+    navMain: [
       {
-        title: 'Project Manager Sep 25',
-        url: '/resumes/1',
-      },
-      {
-        title: 'Marketing Manager Zalando',
-        url: '/resumes/2',
-      },
-      {
-        title: 'Product Manager Resume',
-        url: '/resumes/3',
+        title: 'Dashboard',
+        url: '/',
+        icon: IconDashboard,
+        isActive: true,
       },
     ],
-  },
-  navSecondary: [
-    {
-      title: 'Help',
-      url: '#',
-      icon: IconHelp,
+    resumes: {
+      title: 'My Resumes',
+      url: '/cv',
+      icon: IconFileDescription,
+      items: cvs,
     },
-    {
-      title: 'Settings',
-      url: '#',
-      icon: IconSettings,
-    },
-  ],
-}
-
-export function AppSidebar({cvs, ...props }: React.ComponentProps<typeof Sidebar>) {
-  console.log(cvs);
+    navSecondary: [
+      {
+        title: 'Help',
+        url: '#',
+        icon: IconHelp,
+      },
+      {
+        title: 'Settings',
+        url: '#',
+        icon: IconSettings,
+      },
+    ],
+  }
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -87,7 +75,7 @@ export function AppSidebar({cvs, ...props }: React.ComponentProps<typeof Sidebar
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={data.navMain} resumes={data.resumes} cvs={cvs}/>
+        <NavMain items={data.navMain} resumes={data.resumes} cvs={cvs} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
 

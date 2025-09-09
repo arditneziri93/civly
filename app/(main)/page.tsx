@@ -59,6 +59,7 @@ export default function Page() {
                 Welcome back, Katrin! 👋
               </h1>
             </div>
+            
             <SectionCards />
             <ResumeGrid
               resumes={mockResumes}

@@ -1,19 +1,32 @@
 'use server'
-import { createClient } from '@/utils/supabase/client'
-import { AppSidebar } from './app-sidebar';
+import { createClient } from '@/utils/supabase/server'
+import { AppSidebar } from './app-sidebar'
 
+export async function SidebarWrapper() {
+  try {
+    const supabase = await createClient()
 
-export async function AppSidebarWrapper(): Promise<any> {
-  
-const supabase = createClient();
- const { data, error } = await supabase.functions.invoke('restful-api/cv',
-    {method: 'GET'}
- )
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser()
 
-  console.log("Cvs", data);
-  return (
-    <>
-      <AppSidebar cvs={data}/>
-    </>
-);
+    if (userError || !user) {
+      return <AppSidebar cvs={[]} />
+    }
+
+    const { data: cvs, error } = await supabase
+      .from('cv')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      return <AppSidebar cvs={[]} />
+    }
+
+    return <AppSidebar cvs={cvs || []} />
+  } catch {
+    return <AppSidebar cvs={[]} />
+  }
 }
