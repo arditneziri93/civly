@@ -54,7 +54,6 @@ async function getCVBasedata(cvId: string): Promise<CV>{
     'id',
     cvId,
   );
-  console.log(data);
   const cv = new CV(cvId);
   if(data !== null){
     cv.visibility = data[0].visibility;
@@ -166,7 +165,6 @@ async function getCV(cvId: string): Promise<CVData> {
             index++;
         }
     }
-    console.log(base);
     return base;
 }
 

@@ -15,17 +15,13 @@ export async function SidebarWrapper() {
       return <AppSidebar cvs={[]} />
     }
 
-    const { data: cvs, error } = await supabase
-      .from('cv')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-
+    const { data, error } = await supabase.functions.invoke('restful-api/cv', {method: 'GET'})
+    console.log("cvs:",data);
     if (error) {
       return <AppSidebar cvs={[]} />
     }
 
-    return <AppSidebar cvs={cvs || []} />
+    return <AppSidebar cvs={data.data} />
   } catch {
     return <AppSidebar cvs={[]} />
   }

@@ -40,29 +40,29 @@ export function CVCleanTemplate({
         {/* Left side - Name and Title */}
         <div className="flex-1 pr-8">
           <h1 className="text-3xl font-bold text-black mb-1 leading-tight">
-            {cvData.personalInformation.name}{' '}
-            {cvData.personalInformation.surname}
+            {cvData.personalInformation?.name}{' '}
+            {cvData.personalInformation?.surname}
           </h1>
-          {cvData.personalInformation.professionalTitle && (
+          {cvData.personalInformation?.professionalTitle && (
             <h2 className="text-lg text-black font-normal mb-4 leading-tight">
-              {cvData.personalInformation.professionalTitle}
+              {cvData.personalInformation?.professionalTitle}
             </h2>
           )}
 
           {/* Summary */}
-          {cvData.personalInformation.summary && (
+          {cvData.personalInformation?.summary && (
             <p
               className="text-sm text-gray-600 font-semibold max-w-lg"
               style={{ lineHeight: '1.5' }}
             >
-              {cvData.personalInformation.summary}
+              {cvData.personalInformation?.summary}
             </p>
           )}
         </div>
 
         {/* Right side - Photo */}
         <div className="flex-shrink-0 ">
-          {cvData.personalInformation.profile_url && (
+          {cvData.personalInformation?.profile_url && (
             <Image
               src={cvData.personalInformation.profile_url}
               alt={`${cvData.personalInformation.name} ${cvData.personalInformation.surname}`}
@@ -87,7 +87,7 @@ export function CVCleanTemplate({
               className="space-y-2 text-sm text-gray-600"
               style={{ lineHeight: '1.4' }}
             >
-              {cvData.personalInformation.email && (
+              {cvData.personalInformation?.email && (
                 <a
                   href={`mailto:${cvData.personalInformation.email}`}
                   className="flex items-center gap-1.5 text-gray-600 hover:text-blue-600 transition-colors"
@@ -96,7 +96,7 @@ export function CVCleanTemplate({
                   <span>{cvData.personalInformation.email}</span>
                 </a>
               )}
-              {cvData.personalInformation.phone && (
+              {cvData.personalInformation?.phone && (
                 <a
                   href={`tel:${cvData.personalInformation.phone}`}
                   className="flex items-center gap-1.5 text-gray-600 hover:text-blue-600 transition-colors"
@@ -105,7 +105,7 @@ export function CVCleanTemplate({
                   <span>{cvData.personalInformation.phone}</span>
                 </a>
               )}
-              {cvData.personalInformation.website && (
+              {cvData.personalInformation?.website && (
                 <a
                   href={cvData.personalInformation.website}
                   target="_blank"
@@ -118,7 +118,7 @@ export function CVCleanTemplate({
                   </span>
                 </a>
               )}
-              {cvData.personalInformation.linkedin && (
+              {cvData.personalInformation?.linkedin && (
                 <a
                   href={cvData.personalInformation.linkedin}
                   target="_blank"
@@ -131,7 +131,7 @@ export function CVCleanTemplate({
                   </span>
                 </a>
               )}
-              {cvData.personalInformation.xing && (
+              {cvData.personalInformation?.xing && (
                 <a
                   href={cvData.personalInformation.xing}
                   target="_blank"
@@ -153,7 +153,7 @@ export function CVCleanTemplate({
               Education
             </h3>
             <div className="space-y-3">
-              {cvData.education.map((edu, index) => (
+              {cvData.education?.map((edu, index) => (
                 <div
                   key={index}
                   className="text-xs"
@@ -164,7 +164,7 @@ export function CVCleanTemplate({
                   </div>
                   <div className="text-black mb-1">{edu.institution}</div>
                   <div className="text-gray-500 font-medium">
-                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                    {edu?.startDate && formatDate(edu?.startDate)} - {edu.endDate && formatDate(edu.endDate)}
                     {edu.location && ` • ${edu.location}`}
                   </div>
                   {edu.description && (
@@ -176,7 +176,7 @@ export function CVCleanTemplate({
           </div>
 
           {/* Skills Groups */}
-          {cvData.skillGroups
+          {cvData.skillGroups && cvData.skillGroups
             .sort((a, b) => (a.order || 0) - (b.order || 0))
             .map((skillGroup, groupIndex) => (
               <div key={groupIndex}>
@@ -184,8 +184,8 @@ export function CVCleanTemplate({
                   {skillGroup.name}
                 </h3>
                 <div className="space-y-1">
-                  {skillGroup.skills
-                    .sort((a, b) => a.order - b.order)
+                  {skillGroup.skills && skillGroup.skills
+                    .sort((a, b) => a.order && b.order ? a.order - b.order: 0 )
                     .map((skill, skillIndex) => (
                       <div
                         key={skillIndex}
@@ -208,7 +208,7 @@ export function CVCleanTemplate({
               Experience
             </h3>
             <div className="space-y-5">
-              {cvData.experience.map((work, index) => (
+              {cvData.experience && cvData.experience.map((work, index) => (
                 <div key={index}>
                   <div className="mb-2">
                     {/* Role - more emphasis */}
@@ -230,7 +230,7 @@ export function CVCleanTemplate({
                       className="text-xs text-gray-500 font-medium"
                       style={{ lineHeight: '1.3' }}
                     >
-                      {formatDate(work.startDate)} - {formatDate(work.endDate)}
+                      {work.startDate && formatDate(work.startDate)} - {work.endDate && formatDate(work.endDate)}
                       {work.location && ` | ${work.location}`}
                     </div>
                   </div>

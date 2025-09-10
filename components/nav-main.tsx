@@ -5,11 +5,11 @@ import {
   IconChevronDown,
   type Icon,
 } from '@tabler/icons-react'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { CVData } from '@/types/cv-data'
-
+import {useRouter} from "next/navigation"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -20,6 +20,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
+import { createClient } from '@/utils/supabase/client'
 
 export function NavMain({
   items,
@@ -40,8 +41,19 @@ export function NavMain({
   }
   cvs: CVData[]
 }) {
+  const router = useRouter();
   const [isResumesOpen, setIsResumesOpen] = useState(true)
   const pathname = usePathname()
+
+  //create a new blank cv
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const supabase = await createClient()
+    const { data: newcv, error } = await supabase.functions.invoke('restful-api/cv', {
+      body: {cv:{name: 'Resume'}}
+    });
+    router.refresh()
+  }
 
   // Function to get CV display name
   const getCvDisplayName = (cv: CVData) => {
@@ -82,16 +94,16 @@ export function NavMain({
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
-            <SidebarMenuButton
-              tooltip="Create new CV"
-              asChild
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
-            >
-              <Link href="/cv/new">
+            <form onSubmit={onSubmit}>
+              <SidebarMenuButton
+                tooltip="Create new CV"
+                type="submit"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+              >
                 <IconCirclePlusFilled />
                 <span>New Resume</span>
-              </Link>
-            </SidebarMenuButton>
+              </SidebarMenuButton>
+            </form>
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
