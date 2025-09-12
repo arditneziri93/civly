@@ -20,7 +20,7 @@ export default async function LogoutPage() {
             <a href="#" className="flex items-center gap-2 self-center font-medium">
               <CivlyLogo width={180} height={89} />
             </a>
-            <div>You have Logged out</div>
+            <div className="flex items-center gap-2 self-center font-medium">You have been logged out</div>
           </div>
         </div>
     )
