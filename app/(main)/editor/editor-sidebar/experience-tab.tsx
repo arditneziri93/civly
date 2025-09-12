@@ -33,7 +33,7 @@ export function ExperienceTab({ className }: { className?: string }) {
   const toTs = (v: unknown) => {
     // supports ISO string | Date | null | ""
     if (!v) return Number.NaN;
-    const d = v instanceof Date ? v : new Date(v as any);
+    const d = v instanceof Date ? v : new Date(v as string);
     const t = d.getTime();
     return Number.isNaN(t) ? Number.NaN : t;
   };
@@ -120,11 +120,11 @@ function ExperienceRow({
   onDelete: () => void;
   className?: string;
 }) {
-  const checkOrDefault = (value: any, defaultValue: any) => {
+  const checkOrDefault = (value: string | undefined, defaultValue: string) => {
     if ([null, undefined, ""].includes(value)) {
       return defaultValue;
     }
-    return value;
+    return value as string;
   };
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -166,7 +166,7 @@ function ExperienceRow({
     value: string,
     placeholder: string
   ) => {
-    let checkedValue = checkOrDefault(value, placeholder);
+    const checkedValue = checkOrDefault(value, placeholder);
 
     setDisplayProps((prev) => ({
       ...prev,

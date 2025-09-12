@@ -41,7 +41,7 @@ export default function Page() {
           </div>
         </header>
         <div className="min-h-[100vh] gap-4 p-4 overflow-y-auto">
-          <TemplatePreview />
+          <TemplatePreview id="dummy" />
         </div>
       </SidebarInset>
       <EditorSidebarRight />
@@ -49,21 +49,21 @@ export default function Page() {
   );
 }
 
-const TemplatePreview = () => {
+const TemplatePreview = ({ id }: { id: string }) => {
   const getSingle = useCvStore((s) => s.getSingle);
-  const [cv, setCv] = useState<CvData | null>(null);
+  const [cvData, setCvData] = useState<CvData | null>(null);
   const subscribe = useCvStore.subscribe;
 
   useEffect(() => {
     let alive = true;
     subscribe((state) => {
       console.log("CV STORE CHANGED", state);
-      setCv(state.items.find((x) => x.id === "dummy") as CvData);
+      setCvData(state.items.find((x) => x.id === id) as CvData);
     });
     (async () => {
-      const data = await getSingle("dummy");
+      const data = await getSingle(id);
       if (!alive) return;
-      setCv(data as CvData);
+      setCvData(data as CvData);
     })();
     return () => {
       alive = false;
@@ -71,7 +71,7 @@ const TemplatePreview = () => {
   }, [getSingle, subscribe]);
   return (
     <div className=" mx-auto min-h-[1000px] w-full max-w-3xl rounded-xl bg-gray-200 p-20">
-      <h1 className="text-2xl font-bold">{cv?.name.toString()}</h1>
+      <h1 className="text-2xl font-bold">{cvData?.name.toString()}</h1>
       <br />
       <h2 className="text-xl font-bold">Personal Information</h2>
       <br />
@@ -85,28 +85,30 @@ const TemplatePreview = () => {
       >
         <span className="font-bold text-gray-600">Name</span>
         <p>
-          {cv?.personalInformation.name + " " + cv?.personalInformation.surname}
+          {cvData?.personalInformation.name +
+            " " +
+            cvData?.personalInformation.surname}
         </p>
         <span className="font-bold text-gray-600">Profile URL</span>
-        <p>{cv?.personalInformation.profileUrl}</p>
+        <p>{cvData?.personalInformation.profileUrl}</p>
         <span className="font-bold text-gray-600">Email</span>
-        <p>{cv?.personalInformation.email}</p>
+        <p>{cvData?.personalInformation.email}</p>
         <span className="font-bold text-gray-600">Phone</span>
-        <p>{cv?.personalInformation.phone}</p>
+        <p>{cvData?.personalInformation.phone}</p>
         <span className="font-bold text-gray-600">Location</span>
-        <p>{cv?.personalInformation.location}</p>
+        <p>{cvData?.personalInformation.location}</p>
         <span className="font-bold text-gray-600">LinkedIn</span>
-        <p>{cv?.personalInformation.linkedin}</p>
+        <p>{cvData?.personalInformation.linkedin}</p>
         <span className="font-bold text-gray-600">Xing</span>
-        <p>{cv?.personalInformation.xing}</p>
+        <p>{cvData?.personalInformation.xing}</p>
         <span className="font-bold text-gray-600">Website</span>
-        <p>{cv?.personalInformation.website}</p>
+        <p>{cvData?.personalInformation.website}</p>
         <span className="font-bold text-gray-600">Title</span>
-        <p>{cv?.personalInformation.professionalTitle}</p>
+        <p>{cvData?.personalInformation.professionalTitle}</p>
         <span className="font-bold text-gray-600">Birthdate</span>
-        <p>{cv?.personalInformation.birthdate}</p>
+        <p>{cvData?.personalInformation.birthdate}</p>
         <span className="font-bold text-gray-600">Summary</span>
-        <p>{cv?.personalInformation.summary}</p>
+        <p>{cvData?.personalInformation.summary}</p>
       </div>
       <br />
       <br />
@@ -114,7 +116,7 @@ const TemplatePreview = () => {
       <h2 className="text-xl font-bold">Skills</h2>
       <br />
       <div className="flex flex-cols-2 gap-16">
-        {cv?.skillGroups.map((skillGroup, index) => (
+        {cvData?.skillGroups.map((skillGroup, index) => (
           <div className="flex flex-col gap-2" key={index}>
             <p className="font-bold">{skillGroup.name}</p>
             <div>
@@ -132,7 +134,7 @@ const TemplatePreview = () => {
       <br />
 
       <div className="flex flex-col gap-2">
-        {cv?.experience.map((experience, index) => (
+        {cvData?.experience.map((experience, index) => (
           <div key={index} className="flex flex-col gap-1 mb-2">
             <p className="font-bold">{experience.role}</p>
             <p key={index + "-company"}>{experience.company}</p>
@@ -149,7 +151,7 @@ const TemplatePreview = () => {
       <h2 className="text-xl font-bold">Education</h2>
       <br />
       <div className="flex flex-col gap-2">
-        {cv?.education.map((education, index) => (
+        {cvData?.education.map((education, index) => (
           <div key={index} className="flex flex-col gap-1 mb-2">
             <p className="font-bold">{education.degree}</p>
             <p key={index + "-institution"}>{education.institution}</p>
