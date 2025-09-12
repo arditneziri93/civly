@@ -19,7 +19,7 @@ export const personalInformationSchema = z
     email: z
       .email({ message: "Email must be a valid address" })
       .optional()
-      .or(z.literal("")), // allow empty string
+      .or(z.literal("")),
 
     phone: z.string().optional(),
 
