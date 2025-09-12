@@ -26,8 +26,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 
 export function EditorSidebarRight(
-  props: React.ComponentProps<typeof Sidebar>
+  { id, ...props }: { id: string } & React.ComponentProps<typeof Sidebar>
 ) {
+  console.log('ID in sidebar: ', id);
   const [value, setValue] = React.useState("layout");
 
   const getSingle = useCvStore((s) => s.getSingle);
@@ -42,8 +43,10 @@ export function EditorSidebarRight(
 
   useEffect(() => {
     (async () => {
-      const cv = await getSingle("dummy");
+      if(id){
+      const cv = await getSingle(id);
       form.reset(cv);
+      }
     })();
     const subscription = form.watch((values, { name, type }) => {
       console.log("WATCH", values);

@@ -2,8 +2,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { type CvData } from "@/schemas/cv_data_schema";
-import { fetchAllCvs, updateCv, deleteCv } from "@/services/cv_data.service";
-import { dummyCv } from "./dummy";
+import { fetchAllCvs, updateCv, deleteCv, fetchCv } from "@/services/cv_data.service";
 
 const isNewer = (aISO: string, bISO: string) =>
   Date.parse(aISO) > Date.parse(bISO);
@@ -14,7 +13,7 @@ type CvStore = {
   saveLocally: (cv: CvData) => void;
   saveRemote: (cv: CvData) => Promise<void>;
   getSingle: (id: string) => Promise<CvData | undefined>;
-  fetchDummy: () => Promise<void>;
+  fetchReal: (id: string) => Promise<void>;
   deleteOne: (id: string) => Promise<void>;
 };
 
@@ -88,15 +87,15 @@ export const useCvStore = create<CvStore>()(
 
       getSingle: async (id) => {
         console.log("GET SINGLE", id);
-        await get().fetchDummy();
-        return await Promise.resolve(get().items.find((x) => x.id === id));
+        await get().fetchReal(id);
+        return await Promise.resolve(get().items.find((x) => x?.id === id));
       },
 
-      fetchDummy: async () => {
-        console.log("Fetch Dummy");
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        set({ items: [dummyCv] });
-        console.log("Dummy fetched: ", get().items);
+      fetchReal: async (id) => {
+        console.log("Fetch Real");
+        const real = await fetchCv(id);
+        set({ items: [real] });
+        console.log("Real fetched: ", get().items);
       },
 
       deleteOne: async (id) => {
