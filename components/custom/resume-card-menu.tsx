@@ -36,14 +36,19 @@ export function ResumeCardMenu({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0"
+          className="h-6 w-6 p-0"
           onClick={(e) => e.stopPropagation()}
         >
           <IconDotsVertical className="h-4 w-4" />
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" side="bottom" sideOffset={4}>
+      <DropdownMenuContent
+        align="start"
+        side="right"
+        sideOffset={8}
+        className="min-w-48"
+      >
         <DropdownMenuItem onClick={onEdit} className="hover:!bg-primary/10">
           <IconEdit className="mr-2 h-4 w-4" />
           Edit

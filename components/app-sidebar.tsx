@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import Link from "next/link";
+import * as React from 'react'
+import Link from 'next/link'
 import {
   IconDashboard,
   IconFileDescription,
   IconHelp,
   IconSettings,
-} from "@tabler/icons-react";
+} from '@tabler/icons-react'
 
-import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+import { NavMain } from '@/components/nav-main'
+import { NavSecondary } from '@/components/nav-secondary'
+import { NavUser } from '@/components/nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -20,9 +20,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { CivlyLogo } from "@/components/custom/civly-logo";
-import { CvData } from "@/schemas/cv_data_schema";
+} from '@/components/ui/sidebar'
+import { CivlyLogo } from '@/components/custom/civly-logo'
+import { CvData } from '@/schemas/cv_data_schema'
 
 export function AppSidebar({
   cvs = [],
@@ -31,32 +31,32 @@ export function AppSidebar({
   const data = {
     navMain: [
       {
-        title: "Dashboard",
-        url: "/",
+        title: 'Dashboard',
+        url: '/',
         icon: IconDashboard,
         isActive: true,
       },
     ],
     resumes: {
-      title: "My Resumes",
-      url: "/cv",
+      title: 'My Resumes',
+      url: '/cv',
       icon: IconFileDescription,
       items: cvs,
     },
     navSecondary: [
       {
-        title: "Help",
-        url: "#",
+        title: 'Help',
+        url: '#',
         icon: IconHelp,
       },
       {
-        title: "Settings",
-        url: "#",
+        title: 'Settings',
+        url: '#',
         icon: IconSettings,
       },
     ],
-  };
-  console.log(cvs);
+  }
+  console.log(cvs)
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -80,14 +80,8 @@ export function AppSidebar({
       </SidebarContent>
 
       <SidebarFooter>
-        <NavUser
-          user={{
-            name: "Katrin Schmidt",
-            email: "katrin@example.com",
-            avatar: "/katrin.jpg",
-          }}
-        />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }

@@ -10,36 +10,53 @@ export function useAuth() {
   const supabase = createClient()
 
   useEffect(() => {
-    // Verificar usuário inicial
+    // Check initial user
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       setUser(user)
       setLoading(false)
     }
 
     getUser()
 
-    // Escutar mudanças de autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null)
-        setLoading(false)
-      }
-    )
+    // Listen to authentication changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
 
     return () => {
       subscription.unsubscribe()
     }
-  }, [supabase.auth])
+  }, [supabase])
+
+  const signOut = async () => {
+    try {
+      // Use the server-side signout route
+      const form = document.createElement('form')
+      form.method = 'POST'
+      form.action = '/auth/signout'
+      document.body.appendChild(form)
+      form.submit()
+    } catch (error) {
+      console.error('Error signing out:', error)
+      // Fallback to client-side signout
+      await supabase.auth.signOut()
+    }
+  }
 
   return {
     user,
     loading,
     isLoggedIn: !!user,
-    signOut: () => supabase.auth.signOut(),
-    signIn: (email: string, password: string) => 
+    signOut,
+    signIn: (email: string, password: string) =>
       supabase.auth.signInWithPassword({ email, password }),
-    signUp: (email: string, password: string) => 
-      supabase.auth.signUp({ email, password })
+    signUp: (email: string, password: string) =>
+      supabase.auth.signUp({ email, password }),
   }
 }

@@ -14,7 +14,7 @@ export function CivlyLogo({
 }: CivlyLogoProps) {
   return (
     <Image
-      src="/civly_logo.png"
+      src="/civly-logo.svg"
       alt="Civly Logo"
       width={width}
       height={height}
